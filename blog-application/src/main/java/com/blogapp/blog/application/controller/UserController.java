@@ -3,6 +3,7 @@ package com.blogapp.blog.application.controller;
 import com.blogapp.blog.application.dto.UserDto;
 import com.blogapp.blog.application.service.UserService;
 import exception.DeleteApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,14 +20,14 @@ public class UserController{
     }
 
     @PostMapping("/createUser")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto)
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto)
     {
         UserDto createUserDto = this.userService.createUser(userDto);
         return new ResponseEntity<>(createUserDto, HttpStatus.OK);
     }
 
     @PutMapping("/updateUser/{user_id}")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,@PathVariable(required = false, value = "user_id") Long user_id)
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto,@PathVariable(required = false, value = "user_id") Long user_id)
     {
         UserDto updateUserDto = this.userService.updateUser(userDto,user_id);
         return new ResponseEntity<>(updateUserDto,HttpStatus.OK);
