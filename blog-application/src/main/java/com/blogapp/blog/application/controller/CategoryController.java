@@ -3,7 +3,6 @@ package com.blogapp.blog.application.controller;
 import com.blogapp.blog.application.dto.CategoryDto;
 import com.blogapp.blog.application.service.CategoryService;
 import exception.DeleteApiResponse;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +11,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/category")
-public class CategoryController {
-    public final CategoryService categoryService;
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
+public record CategoryController(CategoryService categoryService) {
 
     @PostMapping("/createCategory")
     @ResponseStatus(HttpStatus.OK)
-    public CategoryDto createCategory(@Valid @RequestBody CategoryDto categoryDto)
+    public CategoryDto createCategory(@RequestBody CategoryDto categoryDto)
     {
         return this.categoryService.createCategory(categoryDto);
     }
@@ -46,7 +41,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/deleteCategory/{categoryId}")
-    public ResponseEntity<DeleteApiResponse> deleteCategory(Long categoryId)
+    public ResponseEntity<DeleteApiResponse> deleteCategory(@PathVariable(value = "categoryId") Long categoryId)
     {
         this.categoryService.deleteCategory(categoryId);
         return new ResponseEntity<>(new DeleteApiResponse("category deleted successfully"),HttpStatus.OK);

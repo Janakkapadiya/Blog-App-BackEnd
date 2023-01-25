@@ -1,5 +1,6 @@
 package com.blogapp.blog.application.service;
 
+import com.blogapp.blog.application.dto.PageDto;
 import com.blogapp.blog.application.dto.PostDto;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface PostService{
 
     void deletePost(Long postId);
 
-    List<PostDto> getAllPost();
+    PageDto getAllPost(Integer pageNumber, Integer pageSize,String sortBy);
 
     List<PostDto> getAllPostByUser(Long user_id);
 
