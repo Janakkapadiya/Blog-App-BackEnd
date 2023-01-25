@@ -2,19 +2,28 @@ package com.blogapp.blog.application.controller;
 
 import com.blogapp.blog.application.dto.PageDto;
 import com.blogapp.blog.application.dto.PostDto;
+import com.blogapp.blog.application.service.ImageUploadService;
 import com.blogapp.blog.application.service.PostService;
 import com.blogapp.blog.application.utilitys.PageIndexes;
 import exception.DeleteApiResponse;
 import jakarta.validation.Valid;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/")
-public record PostController(PostService postService) {
+public record PostController(PostService postService, ImageUploadService imageUploadService) {
+    @Value("${project.image}")
+    private String path;
+
     @PostMapping("/post/user/{user_id}/category/{categoryId}/createPost")
     @ResponseStatus(HttpStatus.CREATED)
     public PostDto createPost(@RequestBody PostDto postDto, @PathVariable(value = "user_id") Long user_id,
@@ -71,4 +80,12 @@ public record PostController(PostService postService) {
         return this.postService.searchByKeyWord(keyword);
     }
 
+    @PostMapping("/post/image/upload/{postId}")
+    public ResponseEntity<PostDto> fileUpload(@RequestParam("image") MultipartFile image,@PathVariable(value = "postId") Long postId) throws IOException {
+        String filename = this.imageUploadService.uploadImage(path, image);
+        PostDto postDto = this.postService.getPostById(postId);
+        postDto.setImageName(filename);
+        PostDto post = this.postService.updatePost(postDto,postId);
+        return new ResponseEntity<>(post,HttpStatus.OK);
+    }
 }
