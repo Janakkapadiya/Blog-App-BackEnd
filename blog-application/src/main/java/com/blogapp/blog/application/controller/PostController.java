@@ -3,6 +3,7 @@ package com.blogapp.blog.application.controller;
 import com.blogapp.blog.application.dto.PageDto;
 import com.blogapp.blog.application.dto.PostDto;
 import com.blogapp.blog.application.service.PostService;
+import com.blogapp.blog.application.utilitys.PageIndexes;
 import exception.DeleteApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -44,9 +45,9 @@ public record PostController(PostService postService) {
     }
 
     @GetMapping("/post")
-    public PageDto getAllPosts(@RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-                               @RequestParam(value = "pageSize",defaultValue = "10",required = false  ) Integer pageSize,
-                               @RequestParam(value = "sort",defaultValue = "postId",required = false) String sortBy)
+    public PageDto getAllPosts(@RequestParam(value = "pageNumber",defaultValue = PageIndexes.PAGE_NUMBER,required = false) Integer pageNumber,
+                               @RequestParam(value = "pageSize",defaultValue = PageIndexes.PAGE_SIZE,required = false  ) Integer pageSize,
+                               @RequestParam(value = "sort",defaultValue = PageIndexes.CURRENT_SORT_BY,required = false) String sortBy)
     {
         return postService.getAllPost(pageNumber,pageSize,sortBy);
     }
@@ -61,6 +62,13 @@ public record PostController(PostService postService) {
     public List<PostDto> getPostByCategory(@PathVariable(value = "categoryId") Long categoryId)
     {
         return this.postService.getAllPostByCategory(categoryId);
+    }
+
+    @GetMapping("/post/search")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PostDto> searchPost(@RequestParam(value="keyword") String keyword)
+    {
+        return this.postService.searchByKeyWord(keyword);
     }
 
 }

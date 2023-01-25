@@ -102,6 +102,12 @@ public record PostServiceImpl(ModelMapper modelMapper,
         return posts.stream().map(this::entityToDto).toList();
     }
 
+    @Override
+    public List<PostDto> searchByKeyWord(String keyword) {
+        List<Post> post = this.postRepo.findByTitleContaining(keyword);
+        return post.stream().map(this::entityToDto).toList();
+    }
+
     private Post dtoToEntity(PostDto postDto) {
         Post post = modelMapper.map(postDto, Post.class);
         post.setTitle(postDto.getTitle());

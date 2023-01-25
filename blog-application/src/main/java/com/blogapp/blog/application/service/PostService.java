@@ -19,4 +19,6 @@ public interface PostService{
     List<PostDto> getAllPostByUser(Long user_id);
 
     List<PostDto> getAllPostByCategory(Long categoryId);
+
+    List<PostDto> searchByKeyWord(String keyword);
 }
