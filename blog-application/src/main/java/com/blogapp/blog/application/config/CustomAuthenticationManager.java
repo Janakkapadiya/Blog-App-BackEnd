@@ -21,20 +21,21 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     @Autowired
     @Qualifier("userDetails")
-    public UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
     @Autowired
-    public PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String name = authentication.getName() + "";
+        String email = authentication.getName() + "";
         String password = authentication.getCredentials() + "";
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(name);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         if (userDetails == null) {
-            throw new BadCredentialsException("Bad Credentials!");
+            throw  new BadCredentialsException("Bad Credentials!");
         }
-        if (passwordEncoder.matches(password, userDetails.getPassword())) {
-            return new UsernamePasswordAuthenticationToken(name, null, null);
+        if (passwordEncoder.matches(password,userDetails.getPassword())) {
+            return new UsernamePasswordAuthenticationToken(email, null, null);
         } else {
             throw new BadCredentialsException("Bad Credentials!");
         }

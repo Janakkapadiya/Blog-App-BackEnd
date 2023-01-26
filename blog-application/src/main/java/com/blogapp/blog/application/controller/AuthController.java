@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,24 +21,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/")
 public class AuthController {
+
     @Autowired
-    public JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
     @Autowired
-    public AuthenticationManager authenticationManager;
+    @Qualifier("this")
+    private CustomUserDetailsServiceImpl customUserDetailServiceImpl;
     @Autowired
-    @Qualifier("userDetails")
-    public CustomUserDetailsServiceImpl customUserDetailsService;
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signIn")
-    public ResponseEntity<JwtTokenRes> createJwtToken(@RequestBody JwtTokenReq jwtTokenRes) throws ErrorResponseHandle {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtTokenRes.getName(), jwtTokenRes.getPassword()));
-        } catch (UsernameNotFoundException e) {
-            e.getStackTrace();
+    public ResponseEntity<?> generateToken(@RequestBody JwtTokenReq dto) throws ErrorResponseHandle {
+        try{
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(),dto.getPassword()));
+        }catch(UsernameNotFoundException e){
             throw new ErrorResponseHandle(400,"Bed credentials");
         }
-
-        UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(jwtTokenRes.getName());
+        UserDetails userDetails = this.customUserDetailServiceImpl.loadUserByUsername(dto.getEmail());
 
         String token = this.jwtUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtTokenRes(token));

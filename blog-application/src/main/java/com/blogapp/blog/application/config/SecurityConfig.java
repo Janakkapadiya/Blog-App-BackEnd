@@ -16,48 +16,38 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig {
-    public final String[] ALLOWED_URLS = {
-            "*/api/signIn",
-            "*/*"
-    };
-    public final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    public final JwtFilter jwtFilter;
-    public final UserRepo userRepo;
+    public static final String[] ALLOWED_URLS = {"/api/signUp", "/api/signIn","/**"};
+    @Autowired
+    private JwtFilter jwtFilter;
     @Autowired
     @Qualifier("userDetails")
-    public UserDetailsService userDetailsService;
-
-    public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtFilter jwtFilter, UserRepo userRepo) {
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.jwtFilter = jwtFilter;
-        this.userRepo = userRepo;
-    }
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    public PasswordEncoder passwordEncoder;
+    private JwtAuthenticationEntryPoint jwtAuthEntryPoint;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpRequest) throws Exception {
-        httpRequest.
-                csrf().
-                disable().
-                authorizeHttpRequests().
-                anyRequest().
-                authenticated()
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable().authorizeHttpRequests()
+                .anyRequest().authenticated()
                 .and()
-                .exceptionHandling().
-                authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
+                .exceptionHandling()
+                .authenticationEntryPoint(this.jwtAuthEntryPoint)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        httpRequest.addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        return httpRequest.build();
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/api/signIn");
+        return web -> web.ignoring().requestMatchers(ALLOWED_URLS);
     }
 
     @Bean

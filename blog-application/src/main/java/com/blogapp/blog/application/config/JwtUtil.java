@@ -20,7 +20,7 @@ public class JwtUtil {
         return this.getClaimFromToken(token, Claims::getSubject);
     }
 
-    private <T> T getClaimFromToken(String token, Function<Claims, T> claimResolver ) {
+    private <T> T getClaimFromToken(String token, Function<Claims, T> claimResolver) {
         final Claims claims = this.getAllClaimsFromToken(token);
         return claimResolver.apply(claims);
     }

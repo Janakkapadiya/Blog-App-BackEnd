@@ -7,14 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class BlogApplication {
-	@Autowired
-	private UserRepo userRepository;
+	private final UserRepo userRepository;
+
+	public BlogApplication(UserRepo userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(BlogApplication.class, args);
@@ -25,7 +29,7 @@ public class BlogApplication {
 		return new ModelMapper();
 	}
 
-	@Bean(name = "userDetails")
+	@Bean("userDetails")
 	public UserDetailsService getUserDetailsService() {
 		return new CustomUserDetailsServiceImpl(userRepository);
 	}
