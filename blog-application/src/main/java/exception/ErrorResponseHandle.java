@@ -1,6 +1,5 @@
 package exception;
-public class ErrorResponseHandle
-{
+public class ErrorResponseHandle extends Throwable {
     private int status;
     private String message;
 

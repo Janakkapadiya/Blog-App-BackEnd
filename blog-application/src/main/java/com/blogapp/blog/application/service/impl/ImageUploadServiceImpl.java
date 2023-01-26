@@ -14,10 +14,6 @@ public class ImageUploadServiceImpl implements ImageUploadService{
     public String uploadImage(String path, MultipartFile file) throws IOException {
         String name =  file.getOriginalFilename();
         String filePath = path + File.separator+name;
-        File f = new File(path);
-        if(!f.exists()) {
-            boolean mkdir = f.mkdir();
-        }
         Files.copy(file.getInputStream(), Paths.get(filePath));
         return name;
     }

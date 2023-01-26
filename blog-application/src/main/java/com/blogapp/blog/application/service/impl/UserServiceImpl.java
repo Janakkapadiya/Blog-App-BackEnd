@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public record UserServiceImpl(UserRepo userRepo, ModelMapper modelMapper) implements UserService {
-
+public record UserServiceImpl(UserRepo userRepo,ModelMapper modelMapper) implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = this.dtoToUser(userDto);
