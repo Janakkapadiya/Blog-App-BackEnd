@@ -6,13 +6,19 @@ import com.blogapp.blog.application.repo.UserRepo;
 import com.blogapp.blog.application.service.UserService;
 import exception.ResourceNotFound;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public record UserServiceImpl(UserRepo userRepo,ModelMapper modelMapper) implements UserService {
+public class UserServiceImpl implements UserService {
+    @Autowired
+    private UserRepo userRepo;
+    @Autowired
+    private ModelMapper modelMapper;
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = this.dtoToUser(userDto);
