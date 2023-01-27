@@ -1,12 +1,12 @@
 package com.blogapp.blog.application.auth;
 
 import com.blogapp.blog.application.config.JwtUtil;
-import com.blogapp.blog.application.dto.JwtTokenReq;
-import com.blogapp.blog.application.dto.JwtTokenRes;
+import com.blogapp.blog.application.dto.authdao.JwtTokenReq;
+import com.blogapp.blog.application.dto.authdao.JwtTokenRes;
+import com.blogapp.blog.application.dto.authdao.RegisterReq;
 import com.blogapp.blog.application.entity.User;
 import com.blogapp.blog.application.repo.UserRepo;
 import exception.ErrorResponseHandle;
-import exception.ResourceNotFound;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

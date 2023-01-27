@@ -1,4 +1,4 @@
-package com.blogapp.blog.application.dto;
+package com.blogapp.blog.application.dto.authdao;
 
 import lombok.*;
 

@@ -1,8 +1,10 @@
 package com.blogapp.blog.application.entity;
 
+import com.blogapp.blog.application.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -28,12 +30,14 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
     private String about;
+    @Enumerated(EnumType.STRING)
+    private Role roles;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> posts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return List.of(new SimpleGrantedAuthority(roles.name()));
     }
 
     @Override

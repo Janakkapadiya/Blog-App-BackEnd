@@ -1,9 +1,9 @@
 package com.blogapp.blog.application.controller;
 
 import com.blogapp.blog.application.auth.AuthService;
-import com.blogapp.blog.application.auth.RegisterReq;
-import com.blogapp.blog.application.dto.JwtTokenReq;
-import com.blogapp.blog.application.dto.JwtTokenRes;
+import com.blogapp.blog.application.dto.authdao.RegisterReq;
+import com.blogapp.blog.application.dto.authdao.JwtTokenReq;
+import com.blogapp.blog.application.dto.authdao.JwtTokenRes;
 import exception.ErrorResponseHandle;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
