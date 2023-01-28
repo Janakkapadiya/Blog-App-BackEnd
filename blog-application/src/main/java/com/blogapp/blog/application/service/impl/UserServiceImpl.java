@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setAbout(userDto.getAbout());
+//        user.setRole(userDto.getRole());
         return user;
     }
 
@@ -74,6 +75,7 @@ public class UserServiceImpl implements UserService {
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         userDto.setAbout(user.getAbout());
+//        userDto.setRole(user.getRole());
         return userDto;
 
     }

@@ -1,5 +1,4 @@
 package com.blogapp.blog.application.enums;
-
-public enum Role{
-    USER,ADMIN
+public enum Role {
+   admin,user
 }

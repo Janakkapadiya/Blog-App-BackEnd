@@ -6,6 +6,7 @@ import exception.DeleteApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,7 @@ public class UserController{
     }
 
     @DeleteMapping("/deleteUser/{user_id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<DeleteApiResponse> deleteUser(@PathVariable(value = "user_id") Long user_id)
     {
         userService.deleteUserById(user_id);
