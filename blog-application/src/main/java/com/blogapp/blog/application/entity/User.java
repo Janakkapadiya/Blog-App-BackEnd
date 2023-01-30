@@ -23,11 +23,12 @@ public class User implements UserDetails {
     private Long user_id;
     @Column(name = "user_name", nullable = false, length = 100)
     private String name;
-    @Column(name = "user_email", nullable = false)
+    @Column(name = "user_email", nullable = false,unique = true)
     private String email;
     @Column(nullable = false)
     private String password;
     private String about;
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

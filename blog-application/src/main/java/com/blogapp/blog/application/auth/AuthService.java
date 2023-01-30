@@ -4,7 +4,6 @@ import com.blogapp.blog.application.config.JwtUtil;
 import com.blogapp.blog.application.dto.authdao.JwtTokenReq;
 import com.blogapp.blog.application.dto.authdao.JwtTokenRes;
 import com.blogapp.blog.application.dto.authdao.RegisterReq;
-import com.blogapp.blog.application.enums.Role;
 import com.blogapp.blog.application.entity.User;
 import com.blogapp.blog.application.repo.UserRepo;
 import exception.ErrorResponseHandle;

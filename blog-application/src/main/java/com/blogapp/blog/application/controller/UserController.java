@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController{
     public final UserService userService;
     public UserController(UserService userService) {
@@ -42,7 +42,6 @@ public class UserController{
     }
 
     @DeleteMapping("/deleteUser/{user_id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<DeleteApiResponse> deleteUser(@PathVariable(value = "user_id") Long user_id)
     {
         userService.deleteUserById(user_id);
@@ -50,6 +49,7 @@ public class UserController{
     }
 
     @GetMapping("/getAllUsers")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UserDto>> getAllUsers()
     {
         List<UserDto> users = userService.getAllUsers();

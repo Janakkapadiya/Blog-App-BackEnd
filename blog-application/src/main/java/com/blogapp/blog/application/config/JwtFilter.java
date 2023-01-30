@@ -41,6 +41,8 @@ public class JwtFilter extends OncePerRequestFilter {
                         null,
                         userDetails.getAuthorities()
                 );
+                logger.info(userDetails + "***************************");
+                logger.info(userDetails.getAuthorities() + " ***********************************");
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
